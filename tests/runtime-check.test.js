@@ -1,24 +1,59 @@
-export async function sendTelegramMessage(text, keyboard = []) {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_ADMIN_CHAT_ID;
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { createUser, createSubscriptionRequest, approveSubscriptionRequest, rejectSubscriptionRequest, getUserByEmail } from '../src/lib/db.js';
+import { hashPassword } from '../src/lib/auth.js';
 
-  if (!token || !chatId) {
-    return { ok: false, reason: 'telegram_not_configured' };
-  }
-
-  const payload = {
-    chat_id: chatId,
-    text,
-    reply_markup: {
-      inline_keyboard: keyboard,
-    },
-  };
-
-  const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
+test('register and approve flow', async () => {
+  const passwordHash = await hashPassword('Password123');
+  const user = createUser({
+    full_name: 'Tester User',
+    email: 'tester@example.com',
+    phone: '0500000000',
+    password_hash: passwordHash,
+    role: 'client',
+    is_active: 0,
   });
 
-  return response.json();
-}
+  const sub = createSubscriptionRequest({
+    full_name: user.full_name,
+    phone: user.phone,
+    country_id: 1,
+    package_id: 1,
+    currency: 'SAR',
+    amount: 1000,
+    bank_or_wallet: 'bank account',
+    user_id: user.id,
+  });
+
+  assert.equal(sub.status, 'pending');
+  const approved = approveSubscriptionRequest(sub.id, user.id);
+  assert.equal(approved.status, 'approved');
+  const record = getUserByEmail('tester@example.com');
+  assert.equal(record.is_active, 1);
+});
+
+test('reject flow', async () => {
+  const passwordHash = await hashPassword('Password456');
+  const user = createUser({
+    full_name: 'Reject User',
+    email: 'rejectuser@example.com',
+    phone: '0555555555',
+    password_hash: passwordHash,
+    role: 'client',
+    is_active: 0,
+  });
+
+  const sub = createSubscriptionRequest({
+    full_name: user.full_name,
+    phone: user.phone,
+    country_id: 2,
+    package_id: 2,
+    currency: 'AED',
+    amount: 2000,
+    bank_or_wallet: 'wallet',
+    user_id: user.id,
+  });
+
+  const rejected = rejectSubscriptionRequest(sub.id, user.id, 'معلومات غير مكتملة');
+  assert.equal(rejected.status, 'rejected');
+});

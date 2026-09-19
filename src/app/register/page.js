@@ -3,18 +3,9 @@
 import { useState } from 'react';
 
 export default function RegisterPage() {
-  const [form, setForm] = useState({
-    full_name: '',
-    email: '',
-    phone: '',
-    password: '',
-  });
+  const [form, setForm] = useState({ full_name: '', email: '', phone: '', password: '', telegram_username: '' });
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,39 +26,41 @@ export default function RegisterPage() {
       return;
     }
 
-    setStatus({ type: 'success', text: 'تم إنشاء الحساب بنجاح، يمكنك الآن تسجيل الدخول.' });
-    setForm({ full_name: '', email: '', phone: '', password: '' });
+    setStatus({ type: 'success', text: 'تم إنشاء الحساب بنجاح.' });
+    setForm({ full_name: '', email: '', phone: '', password: '', telegram_username: '' });
   };
 
   return (
     <main className="section">
-      <div className="container" style={{ maxWidth: 720 }}>
-        <div className="form-wrap">
+      <div className="container" style={{ maxWidth: 760 }}>
+        <div className="card">
           <span className="pill">إنشاء حساب</span>
           <h1 className="section-title">تسجيل عميل جديد</h1>
           <form onSubmit={handleSubmit}>
-            <div className="input-grid">
+            <div className="field-grid">
               <label>
                 الاسم الكامل
-                <input name="full_name" value={form.full_name} onChange={handleChange} required />
+                <input value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} required />
               </label>
               <label>
-                رقم الهاتف
-                <input name="phone" value={form.phone} onChange={handleChange} required />
+                الهاتف
+                <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} required />
               </label>
               <label style={{ gridColumn: '1 / -1' }}>
                 البريد الإلكتروني
-                <input type="email" name="email" value={form.email} onChange={handleChange} required />
+                <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
+              </label>
+              <label style={{ gridColumn: '1 / -1' }}>
+                اسم مستخدم Telegram
+                <input value={form.telegram_username} onChange={(e) => setForm({ ...form, telegram_username: e.target.value })} />
               </label>
               <label style={{ gridColumn: '1 / -1' }}>
                 كلمة المرور
-                <input type="password" name="password" value={form.password} onChange={handleChange} required minLength={8} />
+                <input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} minLength={8} required />
               </label>
             </div>
             <div className="form-actions">
-              <button className="btn btn-primary" disabled={loading}>
-                {loading ? 'جاري إنشاء الحساب...' : 'إنشاء الحساب'}
-              </button>
+              <button className="btn btn-primary" disabled={loading}>{loading ? 'جاري إنشاء الحساب...' : 'إنشاء الحساب'}</button>
             </div>
           </form>
           {status && <div className={`notice ${status.type}`}>{status.text}</div>}

@@ -1,12 +1,42 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
-const secret=process.env.JWT_SECRET;
-if(!secret&&process.env.NODE_ENV==='production') throw new Error('JWT_SECRET is required in production');
-export const hashPassword=(value)=>bcrypt.hash(value,12);
-export const comparePassword=(value,hash)=>bcrypt.compare(value,hash);
-export const issueToken=(payload)=>jwt.sign(payload,secret||'development-only-secret',{expiresIn:'7d'});
-export const verifyToken=(token)=>{try{return jwt.verify(token,secret||'development-only-secret')}catch{return null}};
-export async function getAuthUserFromRequest(){const token=(await cookies()).get('auth_token')?.value;return token?verifyToken(token):null;}
-export const authorizeRole=(user,roles)=>Boolean(user&&roles.includes(user.role));
-export const sanitizeUser=(user)=>{if(!user)return null;const {password_hash,...safe}=user;return safe;};
+
+const JWT_SECRET = process.env.JWT_SECRET || 'development-secret';
+
+export async function hashPassword(password) {
+  return bcrypt.hash(password, 12);
+}
+
+export async function comparePassword(password, hash) {
+  return bcrypt.compare(password, hash);
+}
+
+export function issueToken(payload) {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
+}
+
+export function verifyToken(token) {
+  try {
+    return jwt.verify(token, JWT_SECRET);
+  } catch {
+    return null;
+  }
+}
+
+export async function getAuthUserFromRequest() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('auth_token')?.value;
+  if (!token) return null;
+  return verifyToken(token);
+}
+
+export function authorizeRole(user, roles = []) {
+  return Boolean(user && roles.includes(user.role));
+}
+
+export function sanitizeUser(user) {
+  if (!user) return null;
+  const { password_hash, ...safeUser } = user;
+  return safeUser;
+}

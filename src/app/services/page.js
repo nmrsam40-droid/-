@@ -1,11 +1,13 @@
 export default function ServicesPage() {
   const services = [
     'إدارة طلبات الاشتراك',
-    'إدارة طلبات السحب',
-    'إدارة تجديد الاشتراك',
-    'متابعة حالة الطلب',
-    'إدارة المحافظ',
-    'إدارة الإشعارات',
+    'إدارة المحفظة',
+    'طلب السحب',
+    'تجديد الاشتراك',
+    'الإشعارات',
+    'لوحة الإدارة',
+    'التقارير والأداء',
+    'التوثيق والوثائق',
   ];
 
   return (
@@ -13,10 +15,10 @@ export default function ServicesPage() {
       <div className="container">
         <div className="card">
           <span className="pill">خدماتنا</span>
-          <h1 className="section-title">حلول متكاملة لخدمة العملاء</h1>
+          <h1 className="section-title">حلول متكاملة ومهنية</h1>
           <div className="four-grid">
             {services.map((service) => (
-              <div className="card" key={service}>
+              <div className="card service-card" key={service}>
                 <h3>{service}</h3>
               </div>
             ))}

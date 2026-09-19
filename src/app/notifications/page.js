@@ -4,8 +4,12 @@ export default function NotificationsPage() {
       <div className="container">
         <div className="card">
           <span className="pill">الإشعارات</span>
-          <h1 className="section-title">قائمة الإشعارات</h1>
-          <p className="muted">هنا تظهر جميع الإشعارات الخاصة بالعميل.</p>
+          <h1 className="section-title">إشعارات الحساب</h1>
+          <ul className="notification-list">
+            <li>تم اعتماد طلب الاشتراك بنجاح.</li>
+            <li>تم إرسال طلب السحب إلى الإدارة.</li>
+            <li>تم تحديث حالة حسابك في النظام.</li>
+          </ul>
         </div>
       </div>
     </main>

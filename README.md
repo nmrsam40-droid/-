@@ -1,27 +1,23 @@
-# شركة الحياة للاستثمارات العامة
+# ALHAYAT Company App
 
-نظام كامل لإدارة خدمات الشركة، اشتراكات العملاء، المحافظ، طلبات السحب والتجديد، لوحة الإدارة، وبوت Telegram عبر Backend فقط.
+This is a Next.js application for the ALHAYAT Company investment system.
 
-## التشغيل
+## Features
+- Home page with company identity and package sections
+- Static company content and responsive design
+- Registration and login flow
+- Subscription, withdrawal, and renewal requests
+- Admin dashboard and role-based access
+- Telegram backend integration using environment variables only
+- SQLite database for central data storage
 
-1. قم بتثبيت الحزم:
-   npm install
-2. انسخ ملف `.env.example` إلى `.env` وقم بتحديث القيم.
-3. شغّل التطبيق:
-   npm run dev
-4. أنشئ حساب مدير Super Admin من خلال تسجيل الدخول الأول أو استخدام بيانات الحساب الافتراضية:
-   - البريد: admin@hayat.com
-   - كلمة المرور: Admin@123456
+## Scripts
+- npm install
+- npm run dev
+- npm run build
+- npm run test
 
-## المسارات الرئيسية
-
-- `POST /api/subscription`
-- `POST /api/withdrawal`
-- `POST /api/renewal`
-- `POST /api/telegram/webhook`
-
-## ملاحظات الأمان
-
-- لا يضع أي توكن تيليجرام داخل الواجهة الأمامية.
-- يستخدم `Environment Variables` فقط في Backend.
-- لا يتم حفظ كلمات المرور بصيغة نصية، بل يتم تخزينها كـ hash آمن.
+## Security
+- Store Telegram token and secrets in `.env` only
+- Never expose the token in frontend code
+- Use server-side API routes for admin and Telegram actions

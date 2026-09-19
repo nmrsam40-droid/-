@@ -1,356 +1,47 @@
-:root {
-  --bg: #f7f7f5;
-  --panel: #ffffff;
-  --primary: #0f6d5a;
-  --primary-dark: #0a4f43;
-  --secondary: #d9b36c;
-  --accent: #f5efe5;
-  --text: #152028;
-  --muted: #5c6872;
-  --border: #e6e2d9;
-  --success: #1d9a68;
-  --error: #c13d48;
-  --warning: #d38b28;
+import './globals.css';
+import Link from 'next/link';
+
+export const metadata = {
+  title: 'شركة الحياة للاستثمارات العامة | ALHAYAT Company',
+  description: 'منصة رقمية متكاملة لإدارة خدمات الشركة، الاشتراكات، المحفظة، السحب، التجديد، الإشعارات، ولوحة الإدارة.',
+};
+
+const navItems = [
+  { href: '/', label: 'الرئيسية' },
+  { href: '/about', label: 'من نحن' },
+  { href: '/services', label: 'خدماتنا' },
+  { href: '/features', label: 'مميزاتنا' },
+  { href: '/guarantees', label: 'الضمانات' },
+  { href: '/team', label: 'فريق العمل' },
+  { href: '/contact', label: 'التواصل' },
+  { href: '/login', label: 'تسجيل الدخول' },
+  { href: '/register', label: 'إنشاء حساب' },
+  { href: '/subscribe', label: 'طلب الاشتراك' },
+  { href: '/admin', label: 'لوحة الإدارة' },
+];
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="ar" dir="rtl">
+      <body>
+        <header className="topbar">
+          <div className="container nav-wrap">
+            <Link href="/" className="brand-wrap">
+              <span className="brand-mark">AL</span>
+              <span className="brand-text">شركة الحياة</span>
+            </Link>
+            <nav className="main-nav" aria-label="القائمة الرئيسية">
+              {navItems.map((item) => (
+                <Link key={item.href} href={item.href} className="nav-link">
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </header>
+        {children}
+      </body>
+    </html>
+  );
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-}
-
-* {
-  box-sizing: border-box;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-img {
-  max-width: 100%;
-}
-
-.container {
-  width: min(1200px, calc(100% - 32px));
-  margin: 0 auto;
-}
-
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(15, 109, 90, 0.96);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(255,255,255,0.15);
-}
-
-.nav-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  min-height: 72px;
-}
-
-.brand {
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 800; 
-}
-
-.main-nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 10px 14px;
-}
-
-.nav-link {
-  color: rgba(255,255,255,0.9);
-  font-size: 0.94rem;
-  padding: 8px 10px;
-  border-radius: 8px;
-  transition: 0.2s ease;
-}
-
-.nav-link:hover {
-  background: rgba(255,255,255,0.08);
-}
-
-.hero {
-  background: linear-gradient(135deg, #0b2a29, #105d4d 55%, #d7bc84);
-  color: white;
-  padding: 80px 0 44px;
-}
-
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 32px;
-  align-items: center;
-}
-
-.hero h1 {
-  margin: 0 0 18px;
-  font-size: clamp(2.2rem, 5vw, 4rem);
-  line-height: 1.2;
-}
-
-.lead {
-  font-size: 1.12rem;
-  line-height: 1.8;
-  color: rgba(255,255,255,0.9);
-  margin-bottom: 24px;
-}
-
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 18px;
-  border-radius: 12px;
-  font-weight: 700;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-primary {
-  background: var(--secondary);
-  color: #1c230c;
-}
-
-.btn-secondary {
-  background: transparent;
-  color: white;
-  border: 1px solid rgba(255,255,255,0.5);
-}
-
-.card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 20px 35px rgba(11, 42, 41, 0.08);
-}
-
-.metric-grid,
-.section-grid,
-.info-grid,
-.four-grid,
-.package-grid,
-.team-grid,
-.columns-grid {
-  display: grid;
-  gap: 20px;
-}
-
-.metric-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.metric-box {
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.16);
-  border-radius: 18px;
-  padding: 20px;
-}
-
-.metric-box strong {
-  display: block;
-  font-size: 2rem;
-}
-
-.section {
-  padding: 72px 0;
-}
-
-.section-title {
-  font-size: clamp(1.6rem, 3vw, 2.5rem);
-  margin: 0 0 14px;
-}
-
-.section-subtitle {
-  margin: 0 0 30px;
-  color: var(--muted);
-  line-height: 1.8;
-}
-
-.info-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.four-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.package-grid,
-.columns-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.team-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.pill {
-  display: inline-block;
-  padding: 7px 10px;
-  background: #ebf8f4;
-  color: var(--primary-dark);
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 0.75rem;
-  margin-bottom: 12px;
-}
-
-ul.clean {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-ul.clean li {
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.form-wrap {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  padding: 28px;
-}
-
-.input-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-}
-
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-weight: 700;
-}
-
-input, select, textarea, button {
-  font: inherit;
-}
-
-input, select, textarea {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px 14px;
-  background: white;
-}
-
-textarea {
-  min-height: 100px;
-}
-
-.form-actions {
-  margin-top: 20px;
-}
-
-.notice {
-  margin-top: 15px;
-  padding: 12px 14px;
-  border-radius: 10px;
-  font-weight: 600;
-}
-
-.notice.success {
-  background: #edfdf5;
-  color: var(--success);
-}
-
-.notice.error {
-  background: #fff1f2;
-  color: var(--error);
-}
-
-.admin-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
-}
-
-.stat-box {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 22px;
-}
-
-.stat-box strong {
-  font-size: 1.85rem;
-}
-
-.table-wrap {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  border-radius: 14px;
-  overflow: hidden;
-}
-
-th, td {
-  text-align: right;
-  padding: 14px 12px;
-  border-bottom: 1px solid var(--border);
-}
-
-th {
-  background: #f9f5ef;
-}
-
-.btn-danger {
-  background: var(--error);
-  color: white;
-}
-
-.btn-success {
-  background: var(--success);
-  color: white;
-}
-
-.muted {
-  color: var(--muted);
-}
-
-@media (max-width: 900px) {
-  .hero-grid,
-  .info-grid,
-  .four-grid,
-  .package-grid,
-  .team-grid,
-  .columns-grid,
-  .input-grid,
-  .admin-grid,
-  .metric-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .main-nav {
-    justify-content: flex-start;
-  }
-}

@@ -1,23 +1,4 @@
 import { NextResponse } from 'next/server';
-import { comparePassword, issueToken, sanitizeUser } from '@/lib/auth';
-import { findUserByEmail } from '@/lib/db';
-
-export async function POST(req) {
-  const body = await req.json();
-  const user = findUserByEmail(body.email);
-
-  if (!user || !(await comparePassword(body.password, user.password_hash))) {
-    return NextResponse.json({ error: 'بيانات الدخول غير صحيحة' }, { status: 401 });
-  }
-
-  const token = issueToken({ id: user.id, email: user.email, role: user.role });
-  const response = NextResponse.json({ success: true, user: sanitizeUser(user) });
-  response.cookies.set('auth_token', token, {
-    httpOnly: true,
-    path: '/',
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
-  });
-
-  return response;
-}
+import { createUser,findUserByEmail } from '@/lib/db';
+import { hashPassword,sanitizeUser } from '@/lib/auth';
+export async function POST(req){const body=await req.json();if(!body.full_name||!body.email||!body.password||body.password.length<8)return NextResponse.json({error:'الاسم والبريد وكلمة مرور من 8 أحرف مطلوبة'},{status:400});if(findUserByEmail(body.email))return NextResponse.json({error:'البريد مستخدم مسبقًا'},{status:409});const user=createUser({full_name:body.full_name,email:body.email,phone:body.phone,password_hash:await hashPassword(body.password),telegram_username:body.telegram_username});return NextResponse.json({success:true,user:sanitizeUser(user)},{status:201});}
